@@ -1,8 +1,8 @@
 ﻿using System;
-using PolynomialAlgorithm.Extensions;
-using PolynomialAlgorithm.PrimeNumberChecker.Interfaces;
+using Math.CustomRandom;
+using Math.PrimeNumberChecker.Interfaces;
 
-namespace PolynomialAlgorithm.PrimeNumberChecker
+namespace Math.PrimeNumberChecker
 {
     /// <summary>
     /// Miller - Rabin test

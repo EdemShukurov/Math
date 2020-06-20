@@ -1,4 +1,4 @@
-﻿namespace PolynomialAlgorithm.PrimeNumberChecker.Interfaces
+﻿namespace Math.PrimeNumberChecker.Interfaces
 {
     public interface IPrimeNumberChecker
     {
