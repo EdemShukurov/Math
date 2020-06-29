@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Math.CustomRandom;
 using Math.PrimeNumberChecker.Interfaces;
 
@@ -16,16 +17,14 @@ namespace Math.PrimeNumberChecker
     {
         public bool IsNumberPrime(long number, byte counter = 4)
         {
-            long zero = 0L, one = 1L;
-
-            if((number & one) == zero || number < 2L)             // equals (n % 2L == zero || n < 2L)
+            if((number & 1L) == 0L || number < 2L)             // equals (n % 2L == 0L || n < 2L)
             {
                 return (number == 2L);
             }
 
-            long s = number - one;
+            long s = number - 1L; 
 
-            while ((s & one) == zero)
+            while ((s & 1L) == 0L)
             {
                 s >>= 1;        // equals  s /= 2L;
             }
@@ -34,7 +33,7 @@ namespace Math.PrimeNumberChecker
 
             for (byte i = 0; i < counter; i++)
             {                
-                long a = r.NextLong(number - one) + one;
+                long a = r.NextLong(number - 1L) + 1L;
                 long temp = s;
                 long mod = 1;
 
@@ -43,14 +42,14 @@ namespace Math.PrimeNumberChecker
                     mod = (mod * a) % number;
                 }
 
-                while (temp != number - one && mod != one && mod != number - one)
+                while (temp != number - 1L && mod != 1L && mod != number - 1L)
                 {
                     mod = (mod * mod) % number;
 
                     temp <<= 1;         // equals  temp *= 2L;
                 }
 
-                if (mod != number - 1 && (temp & one) == zero) 
+                if (mod != number - 1 && (temp & 1L) == 0L) 
                 {
                     return false; 
                 }

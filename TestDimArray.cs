@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Math
+﻿namespace Math
 {
     public static class TestDimArray
     {
