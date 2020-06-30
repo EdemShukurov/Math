@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Numerics;
 
 namespace Math
 {
@@ -29,19 +30,17 @@ namespace Math
             if (b == 0L || a == b)
                 return a;
 
-            long one = 1L;
-
             // Algorithm: step 2
-            if (a == one || b == one)
-                return one;
+            if (a == 1L || b == 1L)
+                return 1L;
 
-            long nod = one;
+            long nod = 1L;
             long tmp;
 
             while (a != 0L && b != 0L)
             {
                 // Algorithm: step 3
-                if (((a & one) | (b & one)) == 0L)        // equals (a % 2L == 0L && b % 2L == 0L)
+                if (((a & 1L) | (b & 1L)) == 0L)        // equals (a % 2L == 0L && b % 2L == 0L)
                 {
                     nod <<= 1;          // equals  nod *= 2L;
                     a >>= 1;            // equals  a /= 2L;
@@ -50,14 +49,14 @@ namespace Math
                 }
 
                 // Algorithm: step 4
-                if (((a & one) == 0L) && (b & one) != 0L)       // equals (a % 2L == 0L && b % 2L != 0L)
+                if (((a & 1L) == 0L) && (b & 1L) != 0L)       // equals (a % 2L == 0L && b % 2L != 0L)
                 {
                     a >>= 1;            //equals a /= 2L
                     continue;
                 }
 
                 // Algorithm: step 5
-                if ((a & one) != 0L && ((b & one) == 0L))        // equals (a % 2L != 0L && b % 2L == 0L)
+                if ((a & 1L) != 0L && ((b & 1L) == 0L))        // equals (a % 2L != 0L && b % 2L == 0L)
                 {
                     b >>= 1;            //equals b /= 2L
                     continue;
@@ -79,46 +78,19 @@ namespace Math
             return nod * (a == 0L ? b : a);
         }
 
-        /// <summary>
-        /// "Stripped" Greatest Common Divisor (Binary iterative algorithm, that uses bit operations). This method lacks some checks
-        /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <returns></returns>
-        /// <remarks>
-        /// Algorithm:
-        /// 1. if   a is even, but b is odd,      then    GCD(a, b) = GCD( a/2, b );
-        /// 2. if   a is odd, but b is even,      then    GCD(a, b) = GCD( a, b/2 );
-        /// 3. if   a and b are odd and b > a,    then    GCD(a, b) = GCD( b - a, b/2 ); 
-        /// 4. if   a and b are odd and b < a,    then    GCD(a, b) = GCD( a - b, b/2 ); 
-        /// </remarks>
-        private static long StrippedGCD(long a, long b)
+        public static bool IsEven(int a)
         {
-            long nod = 1L;
-            long tmp;
+            return (a & 1) == 0;
+        }
 
-            while (a != 0L && b != 0L)
-            {
-                // Algorithm: step 1
-                if (((a & 1L) == 0L) && (b & 1L) != 0L)       // equals (a % 2L == 0L && b % 2L != 0L)
-                {
-                    a >>= 1;            //equals a /= 2L
-                    continue;
-                }
+        public static bool IsEven(long a)
+        {
+            return (a & 1) == 0;
+        }
 
-                // Algorithm: step 2
-                if ((a & 1L) != 0L && ((b & 1L) == 0L))        // equals (a % 2L != 0L && b % 2L == 0L)
-                {
-                    b >>= 1;            //equals b /= 2L
-                    continue;
-                }
-
-                tmp = a;
-                a = (b - a) >> 1;       // equals a = (b - a) / 2L;
-                b = tmp;
-            }
-
-            return nod * b;
+        public static bool IsEven(BigInteger a)
+        {
+            return (a & 1) == 0;
         }
 
         /// <summary>
@@ -126,54 +98,20 @@ namespace Math
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
-        public static void Swap(ref long a, ref long b)
+        public static void Swap<T>(ref T a, ref T b)
         {
-            long tmp = a;
+            T tmp = a;
             a = b;
             b = tmp;
         }
 
-        public static List<long> GetRingBy(long number)
-        {
-            var result = new List<long>();
-
-            result.Add(1L);
-
-
-            long step = 1L, initialIterator = 0L;
-
-            if ((number & step) == initialIterator)    // equals number % 2L == 0L
-            {
-                step = 2L;
-                initialIterator = 3L;
-            }
-            else
-            {
-                step = 1L;
-                initialIterator = 2L;
-            }
-
-
-            for (long i = initialIterator; i < number; i += step)
-            {
-                if (StrippedGCD(i, number) == 1L)
-                {
-                    result.Add(i);
-                }
-            }
-
-            return result;
-        }
 
         /// <summary>
         /// Calculates power of 2.
         /// </summary>
-        /// 
         /// <param name="power">Power to raise in.</param>
-        /// 
         /// <returns>Returns specified power of 2 in the case if power is in the range of
         /// [0, 30]. Otherwise returns 0.</returns>
-        /// 
         public static int Pow2(int power)
         {
             return ((power >= 0) && (power <= 30)) ? (1 << power) : 0;
@@ -190,7 +128,6 @@ namespace Math
         {
             return (x > 0) ? ((x & (x - 1)) == 0) : false;
         }
-
 
         public static int FindUpperDegreeOf2(int number)
         {
